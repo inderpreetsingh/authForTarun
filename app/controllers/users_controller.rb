@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :admin_only, :except => :show
+  before_action :admin_only, except: [:show, :teachers, :students]
+  before_action :teachers_only, only: [:teachers]
 
   def index
     @users = User.all
@@ -13,6 +14,14 @@ class UsersController < ApplicationController
         redirect_to root_path, :alert => "Access denied."
       end
     end
+  end
+
+  def teachers
+
+  end
+
+  def students
+
   end
 
   def update
@@ -34,7 +43,14 @@ class UsersController < ApplicationController
 
   def admin_only
     unless current_user.admin?
-      redirect_to root_path, :alert => "Access denied."
+      redirect_to root_path, :alert => "Access denied, only for admins."
+    end
+  end
+
+
+  def teachers_only
+    unless current_user.teacher? || current_user.admin?
+      redirect_to root_path, :alert => "Access denied, only for teachers and admins."
     end
   end
 

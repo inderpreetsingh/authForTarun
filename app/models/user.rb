@@ -1,9 +1,9 @@
 class User < ApplicationRecord
-  enum role: [:user, :vip, :admin]
+  enum role: [:student, :teacher, :admin]
   after_initialize :set_default_role, :if => :new_record?
 
   def set_default_role
-    self.role ||= :user
+    self.role ||= :student
   end
 
   # Include default devise modules. Others available are:
